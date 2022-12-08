@@ -1,0 +1,8 @@
+{
+  "name": "dropet",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react",
+  "id": "c293eced"
+}
