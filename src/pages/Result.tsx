@@ -15,6 +15,7 @@ import {
 } from "@ionic/react";
 import { chevronBack, warningSharp } from "ionicons/icons";
 import history from "../history";
+import { googleAPIKey } from "../env";
 
 const containerStyle = {
   width: "100%",
@@ -117,7 +118,7 @@ const Result: React.FC<ResultProps> = ({ location }) => {
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyBV3lXvysIaB2NlYCp5Kf4jgWGkUwaV5wI",
+    googleMapsApiKey: googleAPIKey,
   });
 
   const onLoad = React.useCallback(function callback(map: any) {
