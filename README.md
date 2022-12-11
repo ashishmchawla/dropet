@@ -1,11 +1,11 @@
 # Drop-ET assignment
-This is an assignment from Drop-ET, a last mile shipment company. 
+This is an assignment from Drop-ET, a last mile shipment company created by Ashish Chawla. 
 
 ## Description
 The goal of this project was to achieve distance calculation between two places using Google Maps or Open Maps API, in my case I've used the Google Maps API. 
 
 ## Tech Stack & Usage
-This is an ionic framework based react app. 
+This is an ionic framework based react app using typescript. 
 In order to run this application, make sure you have installed Ionic CLI on your system, before importing this project. 
 Once ready, you can simply go to your project directory run the installation using npm command: 
 ```bash
