@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { IonButton, IonInput, IonItem, IonLabel, IonList } from "@ionic/react";
+import {
+  IonButton,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonText,
+} from "@ionic/react";
 import history from "../history";
 
 const Home = () => {
@@ -18,6 +25,10 @@ const Home = () => {
 
   return (
     <div className="home">
+      <IonText>
+        <h1>Drop-ET</h1>
+        <h2 className="textDull">Let's find distance between two places!</h2>
+      </IonText>
       <IonList>
         <IonItem>
           <IonLabel position="floating">From</IonLabel>
@@ -34,12 +45,11 @@ const Home = () => {
             onIonInput={(e: any) => setDestination(e.target.value)}
           ></IonInput>
         </IonItem>
-
-        <br />
-        <IonButton shape="round" onClick={redirect}>
-          Search
-        </IonButton>
       </IonList>
+      <br />
+      <IonButton shape="round" onClick={redirect}>
+        Search
+      </IonButton>
     </div>
   );
 };

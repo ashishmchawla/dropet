@@ -5,10 +5,20 @@ import {
   DistanceMatrixService,
 } from "@react-google-maps/api";
 import { RouteComponentProps } from "react-router";
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonText,
+  IonIcon,
+} from "@ionic/react";
+import { chevronBack, warningSharp } from "ionicons/icons";
+import history from "../history";
 
 const containerStyle = {
   width: "100%",
-  height: "700px",
+  height: "500px",
 };
 
 const center = {
@@ -21,7 +31,8 @@ interface Ownprops extends RouteComponentProps {}
 interface ResultProps extends Ownprops {}
 
 const Result: React.FC<ResultProps> = ({ location }) => {
-  let [responseOutput, setResponseOutput] = useState("");
+  let [distanceOutput, setDistanceOutput] = useState("");
+  let [distanceFound, setDistanceFound] = useState<boolean>(false);
 
   const initMap = (map: any) => {
     const bounds = new google.maps.LatLngBounds();
@@ -44,8 +55,12 @@ const Result: React.FC<ResultProps> = ({ location }) => {
     // get distance matrix response
     service.getDistanceMatrix(request).then((response) => {
       console.log(response);
-      setResponseOutput(response.rows[0].elements[0].distance.text);
-      console.log(response.rows[0].elements[0].distance.text);
+      if (response.rows[0].elements[0].status === "NOT_FOUND") {
+        setDistanceFound(false);
+      } else {
+        setDistanceFound(true);
+        setDistanceOutput(response.rows[0].elements[0].distance.text);
+      }
       // show on map
       const originList = response.originAddresses;
       const destinationList = response.destinationAddresses;
@@ -117,28 +132,69 @@ const Result: React.FC<ResultProps> = ({ location }) => {
     setMap(null);
   }, []);
 
+  const backToHome = () => {
+    history.push({
+      pathname: "/",
+    });
+  };
+
   const [map, setMap] = React.useState(null);
-  return isLoaded ? (
-    <div className="home">
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-      >
-        {/* Child components, such as markers, info windows, etc. */}
-        <></>
-      </GoogleMap>
-      <br />
-      Origin: {state.source}
-      <br />
-      Destination: {state.destination}
-      <br />
-      Distance: {responseOutput}
-    </div>
-  ) : (
-    <></>
+  return (
+    <>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonButton onClick={backToHome}>
+              <IonIcon src={chevronBack} />
+              Back
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      {isLoaded && distanceFound ? (
+        <>
+          <div className="home">
+            <IonText>
+              <h2>Results</h2>
+            </IonText>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={10}
+              onLoad={onLoad}
+              onUnmount={onUnmount}
+            >
+              {/* Child components, such as markers, info windows, etc. */}
+              <></>
+            </GoogleMap>
+            <br />
+            <IonText>
+              <h3>
+                <span className="textDull">Origin:</span> {state.source}
+                <br />
+                <span className="textDull">Destination:</span>{" "}
+                {state.destination}
+                <br />
+                <span className="textDull">Distance:</span> {distanceOutput}
+              </h3>
+            </IonText>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="home">
+            <IonText>
+              <h2>
+                {" "}
+                <IonIcon src={warningSharp} /> Error!
+              </h2>
+              <br />
+              <h4> Looks like you've entered wrong locations </h4>
+            </IonText>
+          </div>
+        </>
+      )}{" "}
+    </>
   );
 };
 
